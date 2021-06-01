@@ -1,36 +1,20 @@
-# testing-googleLogin-reactnative
+import { StatusBar } from 'expo-status-bar';
+import React from 'react';
+import { StyleSheet, Text, View, Button } from 'react-native';
 
-how to implement google login
-
-npm i firebase
-npm i expo-google-app-auth
-copy config folder to your own react-native-app folder
-
-import pacakge in pages that want to implement googlelogin (aka. LoginScreen)
-```
 import * as firebase from 'firebase'
 import * as Google from 'expo-google-app-auth';
 import { firebaseConfig } from './config/config'
 import { LogBox } from 'react-native';
 LogBox.ignoreLogs(['Deprecated: Native Google Sign-In has been moved to Expo.GoogleSignIn (\'expo-google-sign-in\') Falling back to `web` behavior. `behavior` deprecated in SDK 34'])
-```
 
-NB. Logbox for hide depcrecated message because if you want it not to be depcrecated you must publish your app first
-
-initialize firebase using code 
-```
-if (!firebase.apps.length) {
+export default function App() {
+  if (!firebase.apps.length) {
     firebase.initializeApp(firebaseConfig);
-  }else {
-      firebase.app()
+  } else {
+    firebase.app()
   }
-```
-put it in highest possible after function screen name itself
-
-
-now implement function for button
-```
-async function signInWithGoogleAsync() {
+  async function signInWithGoogleAsync() {
     try {
       const result = await Google.logInAsync({
         behavior: "web",
@@ -51,8 +35,22 @@ async function signInWithGoogleAsync() {
       return { error: true };
     }
   }
-```
-implement those function to your custom google login button.
-you can handle what response it gave, 
-NB it also gave idToken but our kanjur server require name and email only. 
-NBB you can modify anything in that function except await Google.logInAsync
+
+
+  return (
+    <View style={styles.container}>
+      <Text>Open up App.js to start working on your app!</Text>
+      <Button onPress={() => signInWithGoogleAsync()} title="Google Login"></Button>
+      <StatusBar style="auto" />
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+});
